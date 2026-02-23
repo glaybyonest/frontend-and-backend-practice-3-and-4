@@ -1,6 +1,5 @@
 # ElectroShop – frontend + backend
-
-Небольшое учебное приложение: админка магазина электроники с товарами.  
+  
 Стек: **Node.js + Express** на бэкенде и **React (Create React App)** на фронтенде.
 
 ## Структура проекта
@@ -15,7 +14,6 @@
   - `src/pages/ProductsPage` – страница с таблицей товаров и модалкой.
   - `src/App.js` – рендерит `ProductsPage`.
 
-Корневой `frontend/src` в работе не участвует – код фронта живёт внутри `frontend/frontend`.
 
 ## Как запустить
 
@@ -44,6 +42,6 @@ npm start     # http://localhost:3001
 ```
 
 Фронтенд отправляет запросы на `http://localhost:3000/api` (см. `src/api/index.js`),  
-поэтому **сначала** запусти backend, **потом** frontend.
+поэтому **сначала** запустите backend, **потом** frontend.
 
 ## Практика 3 отображена в pdf файле postaman_test.pdf
