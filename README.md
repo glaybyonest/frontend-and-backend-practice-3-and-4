@@ -43,5 +43,6 @@ npm start     # http://localhost:3001
 
 Фронтенд отправляет запросы на `http://localhost:3000/api` (см. `src/api/index.js`),  
 поэтому **сначала** запустите backend, **потом** frontend.
+"http://localhost:3000/api-docs"
 
 ## Практика 3 отображена в pdf файле postaman_test.pdf
