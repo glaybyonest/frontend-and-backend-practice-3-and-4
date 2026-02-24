@@ -96,11 +96,50 @@ function findUserOr404(id, res) {
 
 // ---------- Маршруты ----------
 
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Возвращает список всех товаров
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Список товаров
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
 // GET /api/products – список всех товаров
 app.get('/api/products', (req, res) => {
   res.json(products);
 });
 
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Возвращает один товар по ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID товара
+ *     responses:
+ *       200:
+ *         description: Найденный товар
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Товар не найден
+ */
 // GET /api/products/:id – один товар
 app.get('/api/products/:id', (req, res) => {
   const id = req.params.id;
@@ -109,6 +148,49 @@ app.get('/api/products/:id', (req, res) => {
   res.json(product);
 });
 
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Создает новый товар
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - category
+ *               - description
+ *               - price
+ *               - stock
+ *             properties:
+ *               name:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: integer
+ *               rating:
+ *                 type: number
+ *               image:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Товар успешно создан
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Ошибка в теле запроса
+ */
 // POST /api/products – создание нового товара
 app.post('/api/products', (req, res) => {
   const { name, category, description, price, stock, rating, image } = req.body;
@@ -133,6 +215,50 @@ app.post('/api/products', (req, res) => {
   res.status(201).json(newProduct);
 });
 
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   patch:
+ *     summary: Обновляет существующий товар
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID товара
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: integer
+ *               rating:
+ *                 type: number
+ *               image:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Обновленный товар
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Товар не найден
+ */
 // PATCH /api/products/:id – обновление товара
 app.patch('/api/products/:id', (req, res) => {
   const id = req.params.id;
@@ -152,6 +278,25 @@ app.patch('/api/products/:id', (req, res) => {
   res.json(product);
 });
 
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Удаляет товар
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID товара
+ *     responses:
+ *       204:
+ *         description: Товар успешно удален (без тела ответа)
+ *       404:
+ *         description: Товар не найден
+ */
 // DELETE /api/products/:id – удаление товара
 app.delete('/api/products/:id', (req, res) => {
   const id = req.params.id;
@@ -166,6 +311,52 @@ app.delete('/api/products/:id', (req, res) => {
  * @swagger
  * components:
  *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - name
+ *         - category
+ *         - description
+ *         - price
+ *         - stock
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: Автоматически сгенерированный уникальный ID товара
+ *         name:
+ *           type: string
+ *           description: Название товара
+ *         category:
+ *           type: string
+ *           description: Категория товара
+ *         description:
+ *           type: string
+ *           description: Описание товара
+ *         price:
+ *           type: number
+ *           format: float
+ *           description: Цена в рублях
+ *         stock:
+ *           type: integer
+ *           description: Количество на складе
+ *         rating:
+ *           type: number
+ *           format: float
+ *           nullable: true
+ *           description: Рейтинг товара от 0 до 5
+ *         image:
+ *           type: string
+ *           nullable: true
+ *           description: URL изображения товара
+ *       example:
+ *         id: "abc123"
+ *         name: "Ноутбук Acer Aspire 5"
+ *         category: "Ноутбуки"
+ *         description: "15.6\" IPS, Intel Core i5, 8GB RAM, 512GB SSD"
+ *         price: 54990
+ *         stock: 12
+ *         rating: 4.5
+ *         image: "https://via.placeholder.com/150"
  *     User:
  *       type: object
  *       required:
@@ -182,7 +373,7 @@ app.delete('/api/products/:id', (req, res) => {
  *           type: integer
  *           description: Возраст пользователя
  *       example:
- *         id: "abc123"
+ *         id: "user123"
  *         name: "Петр"
  *         age: 16
  */
